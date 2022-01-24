@@ -2,7 +2,7 @@
 
 //default는 @jsx react.createElement인데 react패키지를 지금 써보진않을거니 디폴트를 바꿔준다
 
-import {createDOM,render,createElement} from './react'
+import {createDOM,render,createElement,Component} from './react'
 /*
 지금 현재 createElement코드를 쓰지않는데 import해야돼? => 실제 실행되는 코드는 보이는 코드가아닌
 트랜스파일 과정에서 babel이 createElement코드를 가져다 쓰기때문에 잇어야하나부다
@@ -38,9 +38,17 @@ import {createDOM,render,createElement} from './react'
     이건 결국 createElement(h1,props,['props.children']) 즉 아무 처리를안해주면 그대로 문자열로 들어갈거다
     즉 js코드기때문에 {}로 감싸주는 형태를 취하게된거지
     */
-function Title(props){
-    return <h1>{props.children}</h1>;
+
+class Title extends Component{
+    render(){
+        return <h1>{this.props.children}</h1>
+    }
 }
+
+// function Title(props){
+//     return <h1>{props.children}</h1>;
+// }
+
 /*
 createElement함수를 보면 tag를 현재 문자열로만 받는데.
 결국 Title이라는 함수가 리턴하는 Jsx만 필요한거니 tag가 string으로 들어올때랑 함수로 들어올때(즉 컴포넌트로) 그 구분이 필요했는데
@@ -53,7 +61,7 @@ react팀은 첫번째가 대문자일경우 함수로, 소문자일경우는 일
 function Item(props){
     return <li style={`color:${props.color}`}>{props.children}</li>
 }
-const vdom = <p>
+const App = () => <p>
     {/* Title() ? no! 이러면 뭐하러 jsx구문으로 사용자가 html 마크업하듯이 작업할수있다했나? 밑에처럼 정말 마크업하듯이*/}
     <Title>React 잘 만들기</Title>
     <ul>
@@ -73,4 +81,6 @@ const vdom = <p>
 그러니 우리가 쉽게사용할수있는 형태(html markup형태)로 쓰되, 트랜스파일 과정에서 createElement함수가 저런식으로 받아서 결과를 보여주는모습
 */
 
-render(vdom,`#root`)
+render(<App/>,`#root`) 
+console.log(<App/>)
+//render(App()'#root') 해도 마찬가지겟지?
